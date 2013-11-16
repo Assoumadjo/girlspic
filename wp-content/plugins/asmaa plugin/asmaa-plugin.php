@@ -14,6 +14,8 @@ define(PLUGIN_PATH, plugin_dir_path( __FILE__ ));
 //
 //require_once(''.constant("PLUGIN_PATH").'add_project.php');
 add_action( 'init', 'create_post_type' );
+
+//Creation des posts 
 function create_post_type() {
 	register_post_type( 'wp_projects',
 		array(
@@ -45,7 +47,7 @@ function create_post_type() {
 				//'thumbnail',
 				'author',
 				//'trackbacks',
-				//'custom-fields',
+				'custom-fields',
 				//'comments',
 				'revisions',
 				//'page-attributes', // (menu order, hierarchical must be true to show Parent option)
@@ -56,7 +58,9 @@ function create_post_type() {
 		//	'register_meta_box_cb' => 'projet_add_post_type_metabox'
 		)
 	);
+/*
 //Taxonomy pour les tags et les categories
+*/
 register_taxonomy( 'project_category', // register custom taxonomy - quote category
 			'projet',
 			array( 'hierarchical' => true,
@@ -74,13 +78,22 @@ register_taxonomy( 'project_category', // register custom taxonomy - quote categ
 		add_shortcode('asmaatest', 'formulaire_projet');
 		
 }
+//Formulaire
 
 function formulaire_projet()
 {
 	echo "J teste si l titre va passer";
 	echo '<form action="wp-content/plugins/asmaa%20plugin/add_project.php" method="post"><input type="text" name="projet_title" id="projet_title" Placeholder="titre" /><br>
 	<input type="submit" value="Ajouter" /></form>';
-	set_post_type( 20, "hello");
+	$post = array(
+			'post_title' => "test_asmaa",
+			'post_content' => "hello",
+			'post_status' => 'publish',			// Choose: publish, preview, future, etc.
+			'post_type' => 'wp_projects',  // Use a custom post type if you want to
+		);
+		wp_insert_post($post);  // http://codex.wordpress.org/Function_Reference/wp_insert_post
+		
+	
 	
 }
 function add_project()

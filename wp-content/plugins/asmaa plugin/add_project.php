@@ -2,7 +2,7 @@
 
 //define(PLUGIN_PATH, plugin_dir_path( __FILE__ ));
 //
-include_once('asmaa-plugin.php');
+//include_once('asmaa-plugin.php');
 
 $titre=$_POST['projet_title'];
 echo $titre;
