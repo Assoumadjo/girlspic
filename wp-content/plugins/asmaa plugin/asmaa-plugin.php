@@ -48,7 +48,7 @@ function create_post_type() {
 			),
 			'taxonomies' => array( 'category', 'post_tag' ), // add default post categories and tags
 			'menu_position' => 5,
-			'register_meta_box_cb' => 'quote_add_post_type_metabox'
+			'register_meta_box_cb' => 'projet_add_post_type_metabox'
 		)
 	);
 //Taxonomy pour les tags et les categories
@@ -65,5 +65,35 @@ register_taxonomy( 'project_category', // register custom taxonomy - quote categ
 			)
 		);
 }
+function projet_add_post_type_metabox() { // add the meta box
+		add_meta_box( 'projet_metabox', 'Meta', 'projet_metabox', 'projet', 'normal' );
+	}
+ 
+ 
+	function projet_metabox() {
+		global $post;
+		// Noncename needed to verify where the data originated
+		echo '<input type="hidden" name="quote_post_noncename" id="quote_post_noncename" value="' . wp_create_nonce( plugin_basename(__FILE__) ) . '" />';
+ 
+		// Get the data if its already been entered
+		$quote_post_name = get_post_meta($post->ID, '_quote_post_name', true);
+		$quote_post_desc = get_post_meta($post->ID, '_quote_post_desc', true);
+ 
+		// Echo out the field
+		?>
+ 
+		<div class="width_full p_box">
+			<p>
+				<label>Name<br>
+					<input type="text" name="quote_post_name" class="widefat" value="<?php echo $quote_post_name; ?>">
+				</label>
+			</p>
+			<p><label>Description<br>
+					<textarea name="quote_post_desc" class="widefat"><?php echo $quote_post_desc; ?></textarea>
+				</label>
+			</p>
+		</div>
+		<?php
+	}
 
 ?>
