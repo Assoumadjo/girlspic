@@ -8,6 +8,11 @@
  * Author URI: http://URI_Of_The_Plugin_Author
  * License: blbalab
  */
+
+// rester ds le meme directory
+define(PLUGIN_PATH, plugin_dir_path( __FILE__ ));
+//
+//require_once(''.constant("PLUGIN_PATH").'add_project.php');
 add_action( 'init', 'create_post_type' );
 function create_post_type() {
 	register_post_type( 'wp_projects',
@@ -48,7 +53,7 @@ function create_post_type() {
 			),
 			'taxonomies' => array( 'category', 'post_tag' ), // add default post categories and tags
 			'menu_position' => 5,
-			'register_meta_box_cb' => 'projet_add_post_type_metabox'
+		//	'register_meta_box_cb' => 'projet_add_post_type_metabox'
 		)
 	);
 //Taxonomy pour les tags et les categories
@@ -64,6 +69,23 @@ register_taxonomy( 'project_category', // register custom taxonomy - quote categ
 				'label' => __( 'Projects tags' )
 			)
 		);
+
+		//shortcode
+		add_shortcode('asmaatest', 'formulaire_projet');
+		
+}
+
+function formulaire_projet()
+{
+	echo "J teste si l titre va passer";
+	echo '<form action="wp-content/plugins/asmaa%20plugin/add_project.php" method="post"><input type="text" name="projet_title" id="projet_title" Placeholder="titre" /><br>
+	<input type="submit" value="Ajouter" /></form>';
+	set_post_type( 20, "hello");
+	
+}
+function add_project()
+{
+	echo "hello";
 }
 function projet_add_post_type_metabox() { // add the meta box
 		add_meta_box( 'projet_metabox', 'Meta', 'projet_metabox', 'projet', 'normal' );
