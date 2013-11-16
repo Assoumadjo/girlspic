@@ -52,7 +52,7 @@ function create_post_type() {
 		)
 	);
 //Taxonomy pour les tags et les categories
-/*register_taxonomy( 'project_category', // register custom taxonomy - quote category
+register_taxonomy( 'project_category', // register custom taxonomy - quote category
 			'projet',
 			array( 'hierarchical' => true,
 				'label' => __( 'Categories des projets' )
@@ -63,7 +63,7 @@ function create_post_type() {
 			array( 'hierarchical' => false,
 				'label' => __( 'Projects tags' )
 			)
-		);*/
+		);
 }
 
 ?>
