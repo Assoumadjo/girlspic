@@ -36,9 +36,9 @@ function create_post_type() {
 			'supports' => array(
 				'title',
 				'editor',
-				'excerpt',
-				'thumbnail',
-				//'author',
+				//'excerpt',
+				//'thumbnail',
+				'author',
 				//'trackbacks',
 				//'custom-fields',
 				//'comments',
