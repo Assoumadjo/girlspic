@@ -47,7 +47,7 @@ function create_post_type() {
 				//'thumbnail',
 				'author',
 				//'trackbacks',
-				'custom-fields',
+				//'custom-fields',
 				//'comments',
 				'revisions',
 				//'page-attributes', // (menu order, hierarchical must be true to show Parent option)
@@ -86,12 +86,14 @@ function formulaire_projet()
 	echo '<form action="wp-content/plugins/asmaa%20plugin/add_project.php" method="post"><input type="text" name="projet_title" id="projet_title" Placeholder="titre" /><br>
 	<input type="submit" value="Ajouter" /></form>';
 	$post = array(
-			'post_title' => "test_asmaa",
+			'post_title' => "test_asmaaao",
 			'post_content' => "hello",
 			'post_status' => 'publish',			// Choose: publish, preview, future, etc.
-			'post_type' => 'wp_projects',  // Use a custom post type if you want to
+			'post_type' => 'wp_projects',
+			  // Use a custom post type if you want to
 		);
-		wp_insert_post($post);  // http://codex.wordpress.org/Function_Reference/wp_insert_post
+		$the_post_id=wp_insert_post($post);  // http://codex.wordpress.org/Function_Reference/wp_insert_post
+		add_post_meta($the_post_id,'etat','yes');
 		
 	
 	
