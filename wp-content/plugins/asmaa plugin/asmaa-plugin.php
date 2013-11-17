@@ -44,7 +44,7 @@ function create_post_type() {
 				'title',
 				'editor',
 				//'excerpt',
-				//'thumbnail',
+				'thumbnail',
 				'author',
 				//'trackbacks',
 				//'custom-fields',
@@ -104,7 +104,7 @@ function formulaire_projet()
 {
 	echo "Formulaire Projet";
 	?>
-	<form id="projet" name="projetForm" method="post" action="">
+	<form id="projet" enctype="multipart/form-data" name="projetForm" method="post" action="">
  
 			<p><label for="title">Titre Projet</label><br />
 			 
@@ -123,6 +123,13 @@ function formulaire_projet()
 			<input type="text" id="etat" value="" tabindex="1" size="20" name="etat" />
 			 
 			</p>
+
+			<p><label for="thumbnail">File</label><br />
+			 
+			<input type="file" id="thumbnail"  tabindex="1" size="20" name="thumbnail" />
+			 
+			</p>
+
 	
 			<p align="right"><input type="submit" value="Publish" tabindex="6" id="submit" name="submit" /></p>
 			 
@@ -183,6 +190,24 @@ function ty_save_post_data() {
 
 		$the_post_id=wp_insert_post($post);  // http://codex.wordpress.org/Function_Reference/wp_insert_post
 		add_post_meta($the_post_id,'etat',$etat);
+		if (!function_exists('wp_generate_attachment_metadata')){
+                require_once(ABSPATH . "wp-admin" . '/includes/image.php');
+                require_once(ABSPATH . "wp-admin" . '/includes/file.php');
+                require_once(ABSPATH . "wp-admin" . '/includes/media.php');
+            }
+
+            if ($_FILES) {
+                foreach ($_FILES as $file => $array) {
+                    if ($_FILES[$file]['error'] !== UPLOAD_ERR_OK) {
+                        return "upload error : " . $_FILES[$file]['error'];
+                    }
+                    $attach_id = media_handle_upload( $file, $new_post );
+                }   
+            }
+            if ($attach_id > 0){
+                //and if you want to set that image as Post  then use:
+                update_post_meta($the_post_id,'image',$attach_id);
+            }
 		
 		//$location = home_url(); // redirect location, should be login page 
 
