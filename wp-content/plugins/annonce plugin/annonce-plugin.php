@@ -97,7 +97,10 @@ function annonce_form()
 			</p>
 			
 			<p><label for="theme-annonce">Theme d'annonce </label><br />
-			<input type="text" name="theme-annonce" id="theme-annonce">
+			<select name="theme-annonce" id="theme-annonce">
+				<option>Test 1</option>
+				<option>Test 1</option>
+			</select>
 			 
 			</p>
 
