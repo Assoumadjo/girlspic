@@ -79,7 +79,7 @@ register_taxonomy( 'project_category', // register custom taxonomy - quote categ
 		
 }
 //Formulaire
-
+/*
 function formulaire_projet()
 {
 	echo "J teste si l titre va passer";
@@ -98,6 +98,104 @@ function formulaire_projet()
 	
 	
 }
+*/
+
+function formulaire_projet()
+{
+	echo "Formulaire Projet";
+	?>
+	<form id="projet" name="projetForm" method="post" action="">
+ 
+			<p><label for="title">Titre Projet</label><br />
+			 
+			<input type="text" id="title" value="" tabindex="1" size="20" name="title" />
+			 
+			</p>
+	 
+			<p><label for="description">Description du projet</label><br />
+			 
+			<textarea id="description" tabindex="3" name="description" cols="50" rows="6"></textarea>
+			 
+			</p>
+
+			<p><label for="meta">Etat</label><br />
+			 
+			<input type="text" id="etat" value="" tabindex="1" size="20" name="etat" />
+			 
+			</p>
+	
+			<p align="right"><input type="submit" value="Publish" tabindex="6" id="submit" name="submit" /></p>
+			 
+			<input type="hidden" name="post-type" id="post-type" value="wp_projects" />
+			 
+			<input type="hidden" name="action" value="wp_projects" />
+	 
+			<?php wp_nonce_field( 'name_of_my_action','name_of_nonce_field' ); ?>
+	 
+	</form>
+	<?php
+
+		if($_POST){
+			ty_save_post_data();
+		}
+}
+
+function ty_save_post_data() {
+
+	if ( empty($_POST) || !wp_verify_nonce($_POST['name_of_nonce_field'],'name_of_my_action') )
+	{
+	   print 'Sorry, your nonce did not verify.';
+	   exit;
+
+	}else{ 
+ 
+		// Do some minor form validation to make sure there is content
+		if (isset ($_POST['title'])) {
+			$title =  $_POST['title'];
+		} else {
+			echo 'Please enter a title';
+			exit;
+		}
+		if (isset ($_POST['description'])) {
+			$description = $_POST['description'];
+		} else {
+			echo 'Please enter the content';
+			exit;
+		}
+		if (isset ($_POST['etat'])) {
+			$etat = $_POST['etat'];
+		} else {
+			echo 'Please enter the etat';
+			exit;
+		}
+		
+		
+	 
+		// Add the content of the form to $post as an array
+		$post = array(
+			'post_title' => wp_strip_all_tags( $title ),
+			'post_content' => $description,
+			 'description' => $description,
+			
+			'post_status' => 'publish',			// Choose: publish, preview, future, etc.
+			'post_type' => $_POST['post-type']  // Use a custom post type if you want to
+		);
+
+		$the_post_id=wp_insert_post($post);  // http://codex.wordpress.org/Function_Reference/wp_insert_post
+		add_post_meta($the_post_id,'etat',$etat);
+		
+		//$location = home_url(); // redirect location, should be login page 
+
+       // echo "<meta http-equiv='refresh' content='0;url=$location' />"; exit;
+	} // end IF
+	 
+}
+
+
+
+
+
+/*
 function add_project()
 {
 	echo "hello";
@@ -132,5 +230,5 @@ function projet_add_post_type_metabox() { // add the meta box
 		</div>
 		<?php
 	}
-
+*/
 ?>
