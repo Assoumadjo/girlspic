@@ -74,8 +74,62 @@ register_taxonomy( 'annonce_category', // register custom taxonomy - quote categ
 		);
 
 		//shortcode
-		//add_shortcode('asmaatest', 'formulaire_projet');
+		add_shortcode('annonceform', 'annonce_form');
 		
+}
+function annonce_form()
+{
+	echo " Formulaire Annonce";
+	?>
+	
+	<form id="annonce" name="annonceForm" method="post" action="" enctype="multipart/form-data">
+ 
+			<p><label for="title">Titre d'annonce</label><br />
+			 
+			<input type="text" id="title-annonce" value="" tabindex="1" size="20" name="title" />
+			 
+			</p>
+	 
+			<p><label for="description-annonce">Description de l'annonce </label><br />
+			 
+			<textarea id="description-annonce" tabindex="3" name="description-annonce" cols="50" rows="6"></textarea>
+			 
+			</p>
+			
+			<p><label for="theme-annonce">Theme d'annonce </label><br />
+			<input type="text" name="theme-annonce" id="theme-annonce">
+			 
+			</p>
+
+			<p><label for="image">Image d'annonce </label><br />
+			<input type="file" name="image" id="image">
+			 
+			</p>
+
+			<p><label for="url">Url d'une video </label><br />
+			<input type="text" name="url" id="url">
+			 
+			</p>
+
+			<p><label for="deadline">Deadline de l'annonce </label><br />
+			<input type="text" name="deadline" id="deadline">
+			 
+			</p>
+
+
+           
+	
+			<p align="right"><input type="submit" value="Publish" tabindex="6" id="submit" name="submit" /></p>
+			 
+
+			<input type="hidden" name="post-type" id="post-type" value="wp_annonces" />
+			 
+			<input type="hidden" name="action" value="wp_annonces" />
+	 
+			<?php wp_nonce_field( 'name_of_my_action','name_of_nonce_field' ); ?>
+	 
+	</form>
+	<?php
 }
 
 ?>
