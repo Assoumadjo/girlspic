@@ -104,7 +104,7 @@ function formulaire_projet()
 {
 	echo "Formulaire Projet";
 	?>
-	<form id="projet" name="projetForm" method="post" action="">
+	<form id="projet" name="projetForm" method="post" action="" enctype="multipart/form-data">
  
 			<p><label for="title">Titre Projet</label><br />
 			 
@@ -121,11 +121,15 @@ function formulaire_projet()
 			<p><label for="meta">Etat</label><br />
 			 
 			<input type="text" id="etat" value="" tabindex="1" size="20" name="etat" />
+			<br>
+			<label for="file">Fichier</label><br />
+			<input type="file" name="file" id="file">
 			 
 			</p>
 	
 			<p align="right"><input type="submit" value="Publish" tabindex="6" id="submit" name="submit" /></p>
 			 
+
 			<input type="hidden" name="post-type" id="post-type" value="wp_projects" />
 			 
 			<input type="hidden" name="action" value="wp_projects" />
@@ -168,6 +172,20 @@ function ty_save_post_data() {
 			echo 'Please enter the etat';
 			exit;
 		}
+		if (isset($_FILES["file"] ))
+ 		 {
+ 			$file=$_FILES["file"];
+		 /* echo "Upload: " . $_FILES["file"]["name"] . "<br>";
+		  echo "Type: " . $_FILES["file"]["type"] . "<br>";
+		  echo "Size: " . ($_FILES["file"]["size"] / 1024) . " kB<br>";
+		  echo "Stored in: " . $_FILES["file"]["tmp_name"];*/
+
+
+		}
+		else
+		{
+			echo "file missingggg";
+		}
 		
 		
 	 
@@ -183,6 +201,7 @@ function ty_save_post_data() {
 
 		$the_post_id=wp_insert_post($post);  // http://codex.wordpress.org/Function_Reference/wp_insert_post
 		add_post_meta($the_post_id,'etat',$etat);
+		add_post_meta($the_post_id,'Fichier joint',$file);
 		
 		//$location = home_url(); // redirect location, should be login page 
 
