@@ -86,7 +86,8 @@ get_header();
 					?>
 
 						<?php while ( $wp_query->have_posts() ) : $wp_query->the_post(); ?>
-							<?php get_template_part( 'content', fundify_is_crowdfunding() ? 'campaign' : 'post' ); ?>
+						<?php //get_template_part( 'content', fundify_is_crowdfunding() ? 'campaign' : 'post');
+						get_template_part( 'content', 'post') ; ?>
 						<?php endwhile; ?>
 
 					<?php else : ?>
