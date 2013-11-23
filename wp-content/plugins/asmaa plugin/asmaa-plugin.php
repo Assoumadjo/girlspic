@@ -78,27 +78,6 @@ register_taxonomy( 'project_category', // register custom taxonomy - quote categ
 		add_shortcode('asmaatest', 'formulaire_projet');
 		
 }
-//Formulaire
-/*
-function formulaire_projet()
-{
-	echo "J teste si l titre va passer";
-	echo '<form action="wp-content/plugins/asmaa%20plugin/add_project.php" method="post"><input type="text" name="projet_title" id="projet_title" Placeholder="titre" /><br>
-	<input type="submit" value="Ajouter" /></form>';
-	$post = array(
-			'post_title' => "test_asmaaao",
-			'post_content' => "hello",
-			'post_status' => 'publish',			// Choose: publish, preview, future, etc.
-			'post_type' => 'wp_projects',
-			  // Use a custom post type if you want to
-		);
-		$the_post_id=wp_insert_post($post);  // http://codex.wordpress.org/Function_Reference/wp_insert_post
-		add_post_meta($the_post_id,'etat','yes');
-		
-	
-	
-}
-*/
 
 function formulaire_projet()
 {
@@ -111,6 +90,10 @@ function formulaire_projet()
 			<input type="text" id="title" value="" tabindex="1" size="20" name="title" />
 			 
 			</p>
+
+			<p><label for="categorie">Categorie</label><br />
+			
+			<p><?php wp_dropdown_categories('show_option_none=Select categorie&tab_index=4&taxonomy=Categories' ); ?></p>
 	 
 			<p><label for="description">Description du projet</label><br />
 			 
@@ -122,12 +105,39 @@ function formulaire_projet()
 			 
 			<input type="text" id="etat" value="" tabindex="1" size="20" name="etat" />
 			<br>
-			<label for="file">Piece </label><br />
-			<input type="file" name="file" id="file">
+			
 			 
+
+			 <p><label for="thumbnail">Photo</label><br />
+			 
+			<input type="file" id="thumbnail" value="" tabindex="1" size="20" name="thumbnail" />
+			
+			<p><label for="video">URL Video</label><br />
+			 
+			<input type="text" id="video" value="" tabindex="1" size="20" name="video" />
+
+			<!--<p><label for="attach">Pieces jointes</label><br />
+			 
+			<input type="file" id="attach" value="" tabindex="1" size="20" name="attach" />-->
+			
+			<p><label for="certif">N Certification</label><br />
+			 
+			<input type="text" id="certif" value="" tabindex="1" size="20" name="certif" />
+			
+			<p><label for="nbr">Nombre de membres</label><br />
+			 
+			<input type="text" id="nbr" value="" tabindex="1" size="20" name="nbr" />
+			
+			<p><label for="noms">Noms des membres</label><br />
+			 
+			<input type="text" id="noms" value="" tabindex="1" size="20" name="noms" /> 
+			 
+			</p> 			 
+			<p align="right"><input type="submit" value="Envoyer" tabindex="6" id="submit" name="submit" /></p>
+
 			</p>
 	
-			<p align="right"><input type="submit" value="Publish" tabindex="6" id="submit" name="submit" /></p>
+			
 			 
 
 			<input type="hidden" name="post-type" id="post-type" value="wp_projects" />
@@ -157,9 +167,19 @@ function ty_save_post_data() {
 		if (isset ($_POST['title'])) {
 			$title =  $_POST['title'];
 		} else {
-			echo 'Please enter a title';
+
+			echo 'Entrez un titre';
 			exit;
 		}
+		/*if (isset ($_POST['categorie'])) {
+			$title =  $_POST['categorie'];
+		} else {
+			echo 'Choisissez une catégorie';
+
+			
+
+			exit;
+		}*/
 		if (isset ($_POST['description'])) {
 			$description = $_POST['description'];
 		} else {
@@ -171,14 +191,56 @@ function ty_save_post_data() {
 		} else {
 			echo 'Please enter the etat';
 			exit;
+
+			}
+		if (isset ($_FILES['thumbnail'])) {
+			$file = $_FILES['thumbnail'];
+		} else {
+			echo 'Photo manquante';
+			exit;
+			}
+	if (isset ($_POST['video'])) {
+			$video = $_POST['video'];
+		} else {
+			echo 'Donnez un URL de video';
+			exit;
 		}
-		if (isset($_FILES["file"] ))
+		/*if (isset ($_FILES['attach'])) {
+			$attach = $_FILES['attach'];
+		} else {
+			echo 'fichier manquant';
+			exit;
+		}*/
+		
+		if (isset ($_POST['certif'])) {
+			$certif = $_POST['certif'];
+		} else {
+			echo 'Donnez un numero de certification';
+			exit;
+		}
+		if (isset ($_POST['nbr'])) {
+			$nbr = $_POST['nbr'];
+		} else {
+			echo 'Donnez le nombre de participants';
+			exit;
+		}
+		if (isset ($_POST['noms'])) {
+			$noms = $_POST['noms'];
+		} else {
+			echo 'Donnez les noms de participants';
+			exit;
+		}
+		
+
+
+		}
+		/*if (isset($_FILES["file"] ))
  		 {
  			$file=$_FILES["file"];
 		 /* echo "Upload: " . $_FILES["file"]["name"] . "<br>";
 		  echo "Type: " . $_FILES["file"]["type"] . "<br>";
 		  echo "Size: " . ($_FILES["file"]["size"] / 1024) . " kB<br>";
-		  echo "Stored in: " . $_FILES["file"]["tmp_name"];*/
+		  echo "Stored in: " . $_FILES["file"]["tmp_name"];
 
 
 		}
@@ -187,67 +249,84 @@ function ty_save_post_data() {
 			echo "file missingggg";
 		}
 		
+
+		}
+		/*if (isset($_FILES["file"] ))
+ 		 {
+ 			$file=$_FILES["file"];
+		 /* echo "Upload: " . $_FILES["file"]["name"] . "<br>";
+		  echo "Type: " . $_FILES["file"]["type"] . "<br>";
+		  echo "Size: " . ($_FILES["file"]["size"] / 1024) . " kB<br>";
+		  echo "Stored in: " . $_FILES["file"]["tmp_name"];*/
+
+
 		
+		
+		
+
 	 
 		// Add the content of the form to $post as an array
 		$post = array(
 			'post_title' => wp_strip_all_tags( $title ),
 			'post_content' => $description,
-			 'description' => $description,
-			
+			'description' => $description,
 			'post_status' => 'publish',			// Choose: publish, preview, future, etc.
-			'post_type' => $_POST['post-type']  // Use a custom post type if you want to
+			'post_type' => 'wp_projects' // Use a custom post type if you want to
 		);
+		
+
 
 		$the_post_id=wp_insert_post($post);  // http://codex.wordpress.org/Function_Reference/wp_insert_post
+
+		if ($_FILES) {
+	    foreach ($_FILES as $file => $array) {
+	    $newupload = insert_attachment($file,$the_post_id);
+}
+}
+	/*if( 'POST' == $_SERVER['REQUEST_METHOD'] && !empty( $_FILES )) {
+		require_once(ABSPATH . 'wp-admin/includes/admin.php');
+		$id = media_handle_upload('attach', $the_post_id);
+		unset($_FILES);
+		update_field('attach', $_POST['attach'], $the_post_id);
+	}*/
+            
+		
+		//add_post_meta($the_post_id,'categorie',$categorie);
+		//add_post_meta($the_post_id,'etat',$etat);
+		//add_post_meta($the_post_id,'photo',$photo);
+		/*add_post_meta($the_post_id,'video',$video);
+		add_post_meta($the_post_id,'attach',$attach);
+		add_post_meta($the_post_id,'certif',$certif);
+		add_post_meta($the_post_id,'nbr',$nbr);
+		add_post_meta($the_post_id,'noms',$noms);*/
+
 		add_post_meta($the_post_id,'etat',$etat);
 		add_post_meta($the_post_id,'Fichier joint',$file);
+
+		add_post_meta($the_post_id,'etat',$etat);
+		add_post_meta($the_post_id,'Fichier joint',$file);
+
 		
 		//$location = home_url(); // redirect location, should be login page 
 
        // echo "<meta http-equiv='refresh' content='0;url=$location' />"; exit;
 	} // end IF
 	 
-}
-d
 
 
 
-
-/*
-function add_project()
-{
-	echo "hello";
-}
-function projet_add_post_type_metabox() { // add the meta box
-		add_meta_box( 'projet_metabox', 'Meta', 'projet_metabox', 'projet', 'normal' );
+function insert_attachment($file_handler,$post_id,$setthumb='false') {
+	    // check to make sure its a successful upload
+	    if ($_FILES[$file_handler]['error'] !== UPLOAD_ERR_OK) __return_false();
+	 
+	    require_once(ABSPATH . "wp-admin" . '/includes/image.php');
+	    require_once(ABSPATH . "wp-admin" . '/includes/file.php');
+	    require_once(ABSPATH . "wp-admin" . '/includes/media.php');
+	 
+	    $attach_id = media_handle_upload( $file_handler, $post_id );
+	 	if ($setthumb) update_post_meta($post_id,'_thumbnail_id',$attach_id);
+	    return $attach_id;
 	}
- 
- 
-	function projet_metabox() {
-		global $post;
-		// Noncename needed to verify where the data originated
-		echo '<input type="hidden" name="quote_post_noncename" id="quote_post_noncename" value="' . wp_create_nonce( plugin_basename(__FILE__) ) . '" />';
- 
-		// Get the data if its already been entered
-		$quote_post_name = get_post_meta($post->ID, '_quote_post_name', true);
-		$quote_post_desc = get_post_meta($post->ID, '_quote_post_desc', true);
- 
-		// Echo out the field
-		?>
- 
-		<div class="width_full p_box">
-			<p>
-				<label>Name<br>
-					<input type="text" name="quote_post_name" class="widefat" value="<?php echo $quote_post_name; ?>">
-				</label>
-			</p>
-			<p><label>Description<br>
-					<textarea name="quote_post_desc" class="widefat"><?php echo $quote_post_desc; ?></textarea>
-				</label>
-			</p>
-		</div>
-		<?php
-	}
-*/
+
+
 ?>
