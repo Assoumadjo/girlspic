@@ -13,6 +13,7 @@
 define(PLUGIN_PATH, plugin_dir_path( __FILE__ ));
 //
 //require_once(''.constant("PLUGIN_PATH").'add_project.php');
+
 add_action( 'init', 'create_annonce' );
 function create_annonce()
 {
@@ -43,7 +44,7 @@ function create_annonce()
 				'title',
 				'editor',
 				//'excerpt',
-				//'thumbnail',
+				'thumbnail',
 				'author',
 				//'trackbacks',
 				//'custom-fields',
@@ -52,7 +53,7 @@ function create_annonce()
 				//'page-attributes', // (menu order, hierarchical must be true to show Parent option)
 				//'post-formats',
 			),
-			'taxonomies' => array( 'category', 'post_tag' ), // add default post categories and tags
+			//'taxonomies' => array( 'category', 'post_tag' ), // add default post categories and tags
 			'menu_position' => 5,
 		//	'register_meta_box_cb' => 'projet_add_post_type_metabox'
 		)
@@ -61,15 +62,15 @@ function create_annonce()
 //Taxonomy pour les tags et les categories
 */
 register_taxonomy( 'annonce_category', // register custom taxonomy - quote category
-			'projet',
+			'wp_annonce',
 			array( 'hierarchical' => true,
 				'label' => __( 'Categories des annonces' )
 			)
 		);
 		register_taxonomy( 'annonce_tag', // register custom taxonomy - quote tag
-			'projet',
+			'wp_annonce',
 			array( 'hierarchical' => false,
-				'label' => __( 'Annonces tags' )
+				'label' => __( 'Tags des annonces' )
 			)
 		);
 
@@ -79,60 +80,189 @@ register_taxonomy( 'annonce_category', // register custom taxonomy - quote categ
 }
 function annonce_form()
 {
-	echo " Formulaire Annonce";
+	//echo " Formulaire Annonce";
 	?>
-	
-	<form id="annonce" name="annonceForm" method="post" action="" enctype="multipart/form-data">
- 
-			<p><label for="title">Titre d'annonce</label><br />
-			 
-			<input type="text" id="title-annonce" value="" tabindex="1" size="20" name="title" />
-			 
-			</p>
-	 
-			<p><label for="description-annonce">Description de l'annonce </label><br />
-			 
-			<textarea id="description-annonce" tabindex="3" name="description-annonce" cols="50" rows="6"></textarea>
-			 
-			</p>
+	<html>
+	<head>
+
+		<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+  <script src="//tinymce.cachefly.net/4.0/tinymce.min.js"></script>
+
+
+   <script>
+   jQuery(function($){
+		$.datepicker.regional['fr'] = {
+			prevText: 'Précédent',
+			nextText: 'Suivant',
+			monthNames: ['janvier', 'février', 'mars', 'avril', 'mai', 'juin',
+				'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'],
+			dayNamesMin: ['D','L','M','M','J','V','S'],
+			dateFormat: 'dd/mm/yy',
+			firstDay: 1,
+			isRTL: false,
+			showMonthAfterYear: false,
+			yearSuffix: ''};
+		$.datepicker.setDefaults($.datepicker.regional['fr']);
+	});
+  $(document).ready(function() {
+	  $("#goal").datepicker();
+	   tinymce.init({selector:'textarea',
+        	  menubar:false,
+  			  statusbar: false,
+    	 mode : "specific_textareas",
+        /*plugins : "autolink, lists, spellchecker, style, layer, table, advhr, advimage, advlink, emotions, iespell, inlinepopups, insertdatetime, preview, media, searchreplace, print, contextmenu, paste, directionality, fullscreen, noneditable, visualchars, nonbreaking, xhtmlxtras, template",*/
+        editor_selector :"tinymce-enabled"
+    }
+        	);
+  });
+  </script></head>
+  <body>
+	<div class="entry-content">
+				
 			
-			<p><label for="theme-annonce">Theme d'annonce </label><br />
-			<select name="theme-annonce" id="theme-annonce">
-				<option>Test 1</option>
-				<option>Test 1</option>
-			</select>
-			 
+	<form action="" method="post" class="atcf-submit-campaign" enctype="multipart/form-data">
+		
+			<h3 class="atcf-submit-section campaign_heading">Postez votre annonce maintenant </h3>
+	<p class="atcf-submit-campaign-title">
+		<label for="title">Titre</label>
+		<input type="text" name="title" id="title" value="" placeholder="">
+	</p>
+
+	<div class="atcf-submit-campaign-category">
+		<label for="category">Categories</label>
+
+		<ul class="atcf-multi-select">			
+			<?php
+				$genres = get_terms('annonce_category', 'orderby=id&hide_empty=0');
+				$counter = 0;
+				foreach ($genres as $genre) {
+				$counter++;
+				//$option = '<input type="checkbox" name="genre[]" id="'.$genre->name.'" value="'.$genre->name.'">';
+				//$option .= '<label for="genre">'.$genre->name.'</label>';
+				$option='<li id="download_category-'.$counter.'" class="popular-category">
+				<label class="selectit" >
+				<input value="'.$genre->name.'" type="checkbox" name="category[]" id="'.$genre->name.'">'.$genre->name.'</label></li>';
+				echo $option;
+				}
+			?>
+
+	</ul>
+	</div>
+	<div class="atcf-submit-campaign-description">
+		<label for="description">Description</label>
+		<div id="wp-description-wrap" class="wp-core-ui wp-editor-wrap html-active">
+
+<div id="wp-description-editor-container" class="wp-editor-container">
+	<textarea rows="8" cols="40" name="description" id="editor" class="tinymce-enabled required"></textarea>
+</div>
+
+
+	</div>
+	<p class="atcf-submit-campaign-excerpt">
+		<label for="goal">Dernier delai</label>
+		<input type="text" name="goal" id="goal" value="" placeholder="DD/MM/YY">
+	</p>
+	<p class="atcf-submit-campaign-image">
+		<label for="image">Image de l'annonce</label>
+		<input type="file" name="image" id="image">
+
 			</p>
-
-			<p><label for="image">Image d'annonce </label><br />
-			<input type="file" name="image" id="image">
-			 
-			</p>
-
-			<p><label for="url">Url d'une video </label><br />
-			<input type="text" name="url" id="url">
-			 
-			</p>
-
-			<p><label for="deadline">Deadline de l'annonce </label><br />
-			<input type="text" name="deadline" id="deadline">
-			 
-			</p>
-
-
-           
+	<p class="atcf-submit-campaign-video">
+		<label for="video"> Video URL</label>
+		<input type="text" name="video" id="video" value="" placeholder="">
+	</p>
 	
-			<p align="right"><input type="submit" value="Publish" tabindex="6" id="submit" name="submit" /></p>
-			 
 
-			<input type="hidden" name="post-type" id="post-type" value="wp_annonces" />
-			 
-			<input type="hidden" name="action" value="wp_annonces" />
+		<p class="atcf-submit-campaign-submit">
+			<button type="submit" name="submit" value="submit" class="button">
+				Publiez votre annonce 		</button>
+
+				<input type="hidden" name="post-type" id="post-type" value="wp_annonce" />
+				<input type="hidden" name="action" value="wp_annonce" />
 	 
-			<?php wp_nonce_field( 'name_of_my_action','name_of_nonce_field' ); ?>
-	 
+					</p>
 	</form>
+
+	
+
+
+											</div></body></html>
+
+	
+			<?php wp_nonce_field( 'name_of_my_action','name_of_nonce_field' ); ?>
+	
 	<?php
+
+		if($_POST){
+			save_annonce_data();
+}		
+}
+function save_annonce_data()
+{
+	if(isset($_POST['title']))
+	{
+		$title=$_POST['title'];
+	}
+	else
+	{
+		echo 'Please enter a title';
+			exit;
+	}
+	if (isset($_POST['description'])) {
+		$description=$_POST['description'];
+	}
+	else
+	{
+		echo "Please enter a description";
+		exit;
+	}
+	if (isset($_POST['category']) && is_array($_POST['category'])) {
+		foreach($_POST['category'] as $category) echo $category;
+		$tableau=array($_POST['category']);
+	}
+	else
+	{
+		echo "check a category";
+		exit;
+	}
+	if(isset($_POST['goal']))
+	{
+		$deadline=$_POST['goal'];
+	}
+	else
+	{
+		echo "Choose a deadline";
+		exit;
+	}
+	if(isset($_POST['video']))
+	{
+		$video=$_POST['video'];
+	}
+	else
+	{
+		echo "Choose a deadline";
+		exit;
+	}
+
+
+	$post = array(
+			'post_title' => wp_strip_all_tags( $title ),
+			'post_content' => $description,
+			 
+			 'description' => $description,
+			'post_status' => 'publish',			// Choose: publish, preview, future, etc.
+			'post_type' => $_POST['post-type'] , // Use a custom post type if you want to
+			'post_category'        =>  array( 'genre' => array($_POST['category']) )  // support for custom taxonomies.   
+
+		);
+
+		$the_post_id=wp_insert_post($post);  // http://codex.wordpress.org/Function_Reference/wp_insert_post
+		add_post_meta($the_post_id,'url-video',$video);
+		add_post_meta($the_post_id,'deadline',$deadline);
+		wp_set_post_terms($the_post_id,array($_POST['category']),'genre',true);
+		
 }
 
 ?>

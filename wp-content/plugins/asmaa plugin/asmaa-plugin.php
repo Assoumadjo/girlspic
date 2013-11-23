@@ -44,7 +44,7 @@ function create_post_type() {
 				'title',
 				'editor',
 				//'excerpt',
-				//'thumbnail',
+				'thumbnail',
 				'author',
 				//'trackbacks',
 				//'custom-fields',
@@ -53,7 +53,7 @@ function create_post_type() {
 				//'page-attributes', // (menu order, hierarchical must be true to show Parent option)
 				//'post-formats',
 			),
-			'taxonomies' => array( 'category', 'post_tag' ), // add default post categories and tags
+			//'taxonomies' => array( 'category', 'post_tag' ), // add default post categories and tags
 			'menu_position' => 5,
 		//	'register_meta_box_cb' => 'projet_add_post_type_metabox'
 		)
@@ -62,13 +62,13 @@ function create_post_type() {
 //Taxonomy pour les tags et les categories
 */
 register_taxonomy( 'project_category', // register custom taxonomy - quote category
-			'projet',
+			'wp_projects',
 			array( 'hierarchical' => true,
 				'label' => __( 'Categories des projets' )
 			)
 		);
 		register_taxonomy( 'project_tag', // register custom taxonomy - quote tag
-			'projet',
+			'wp_projects',
 			array( 'hierarchical' => false,
 				'label' => __( 'Projects tags' )
 			)
@@ -111,49 +111,25 @@ function formulaire_projet()
 			<input type="text" id="title" value="" tabindex="1" size="20" name="title" />
 			 
 			</p>
-			
-			<p><label for="categorie">Categorie</label><br />
-			
-			<p><?php wp_dropdown_categories('show_option_none=Select categorie&tab_index=4&taxonomy=project_category' ); ?></p>
-
 	 
 			<p><label for="description">Description du projet</label><br />
 			 
-			<textarea id="description" tabindex="3" name="description" cols="1500" rows="6"></textarea>
+			<textarea id="description" tabindex="3" name="description" cols="50" rows="6"></textarea>
 			 
 			</p>
 
-			<p><label for="etat">Etat du projet</label><br />
+			<p><label for="meta">Etat</label><br />
 			 
 			<input type="text" id="etat" value="" tabindex="1" size="20" name="etat" />
+			<br>
+			<label for="file">Piece </label><br />
+			<input type="file" name="file" id="file">
 			 
-			 <p><label for="photo">Photo</label><br />
-			 
-			<input type="file" id="photo" value="" tabindex="1" size="20" name="photo" />
-			
-			<p><label for="video">URL Video</label><br />
-			 
-			<input type="text" id="video" value="" tabindex="1" size="20" name="video" />
-
-			<p><label for="attach">Pieces jointes</label><br />
-			 
-			<input type="file" id="attach" value="" tabindex="1" size="20" name="attach" />
-			
-			<p><label for="certif">N Certification</label><br />
-			 
-			<input type="text" id="certif" value="" tabindex="1" size="20" name="certif" />
-			
-			<p><label for="nbr">Nombre de membres</label><br />
-			 
-			<input type="text" id="nbr" value="" tabindex="1" size="20" name="nbr" />
-			
-			<p><label for="noms">Noms des membres</label><br />
-			 
-			<input type="text" id="noms" value="" tabindex="1" size="20" name="noms" />
-			 
-			</p>			 
+			</p>
+	
 			<p align="right"><input type="submit" value="Publish" tabindex="6" id="submit" name="submit" /></p>
 			 
+
 			<input type="hidden" name="post-type" id="post-type" value="wp_projects" />
 			 
 			<input type="hidden" name="action" value="wp_projects" />
@@ -181,19 +157,13 @@ function ty_save_post_data() {
 		if (isset ($_POST['title'])) {
 			$title =  $_POST['title'];
 		} else {
-			echo 'Entrez un titre';
-			exit;
-		}
-		if (isset ($_POST['categorie'])) {
-			$title =  $_POST['categorie'];
-		} else {
-			echo 'Choisissez une catégorie';
+			echo 'Please enter a title';
 			exit;
 		}
 		if (isset ($_POST['description'])) {
 			$description = $_POST['description'];
 		} else {
-			echo 'Donnez une description';
+			echo 'Please enter the content';
 			exit;
 		}
 		if (isset ($_POST['etat'])) {
@@ -201,43 +171,22 @@ function ty_save_post_data() {
 		} else {
 			echo 'Please enter the etat';
 			exit;
-			}
-		if (isset ($_FILES['photo'])) {
-			$attach = $_FILES['photo'];
-		} else {
-			echo 'Choisissez une photo';
-			exit;
 		}
-		if (isset ($_POST['video'])) {
-			$attach = $_POST['video'];
-		} else {
-			echo 'Donnez un URL de video';
-			exit;
+		if (isset($_FILES["file"] ))
+ 		 {
+ 			$file=$_FILES["file"];
+		 /* echo "Upload: " . $_FILES["file"]["name"] . "<br>";
+		  echo "Type: " . $_FILES["file"]["type"] . "<br>";
+		  echo "Size: " . ($_FILES["file"]["size"] / 1024) . " kB<br>";
+		  echo "Stored in: " . $_FILES["file"]["tmp_name"];*/
+
+
 		}
-		if (isset ($_FILES['attach'])) {
-			$attach = $_FILES['attach'];
-		} else {
-			echo 'Please enter the etat';
-			exit;
+		else
+		{
+			echo "file missingggg";
 		}
-		if (isset ($_POST['certif'])) {
-			$attach = $_POST['certif'];
-		} else {
-			echo 'Donnez un numero de certification';
-			exit;
-		}
-		if (isset ($_POST['nbr'])) {
-			$attach = $_POST['nbr'];
-		} else {
-			echo 'Donnez le nombre de participants';
-			exit;
-		}
-		if (isset ($_POST['noms'])) {
-			$attach = $_POST['noms'];
-		} else {
-			echo 'Donnez les noms de participants';
-			exit;
-		}
+		
 		
 	 
 		// Add the content of the form to $post as an array
@@ -252,7 +201,7 @@ function ty_save_post_data() {
 
 		$the_post_id=wp_insert_post($post);  // http://codex.wordpress.org/Function_Reference/wp_insert_post
 		add_post_meta($the_post_id,'etat',$etat);
-		add_post_meta($the_post_id,'attach',$attach);
+		add_post_meta($the_post_id,'Fichier joint',$file);
 		
 		//$location = home_url(); // redirect location, should be login page 
 
@@ -260,7 +209,7 @@ function ty_save_post_data() {
 	} // end IF
 	 
 }
-
+d
 
 
 
