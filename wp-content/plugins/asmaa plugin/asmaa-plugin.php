@@ -53,7 +53,7 @@ function create_post_type() {
 				//'page-attributes', // (menu order, hierarchical must be true to show Parent option)
 				//'post-formats',
 			),
-			'taxonomies' => array( 'category', 'post_tag' ), // add default post categories and tags
+			//'taxonomies' => array( 'category', 'post_tag' ), // add default post categories and tags
 			'menu_position' => 5,
 		//	'register_meta_box_cb' => 'projet_add_post_type_metabox'
 		)
@@ -62,13 +62,13 @@ function create_post_type() {
 //Taxonomy pour les tags et les categories
 */
 register_taxonomy( 'project_category', // register custom taxonomy - quote category
-			'projet',
+			'wp_projects',
 			array( 'hierarchical' => true,
 				'label' => __( 'Categories des projets' )
 			)
 		);
 		register_taxonomy( 'project_tag', // register custom taxonomy - quote tag
-			'projet',
+			'wp_projects',
 			array( 'hierarchical' => false,
 				'label' => __( 'Projects tags' )
 			)
