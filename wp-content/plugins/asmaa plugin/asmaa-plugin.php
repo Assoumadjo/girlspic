@@ -83,17 +83,19 @@ function formulaire_projet()
 {
 	echo "Formulaire Projet";
 	?>
+	<div class="entry-content">
 	<form id="projet" name="projetForm" method="post" action="" enctype="multipart/form-data">
- 
+		 <h3 class="atcf-submit-section campaign_heading">Postez votre Projet maintenant </h3>
+			<p class="atcf-submit-campaign-title">
 			<p><label for="title">Titre Projet</label><br />
 			 
 			<input type="text" id="title" value="" tabindex="1" size="20" name="title" />
 			 
 			</p>
 
-			<p><label for="categorie">Categorie</label><br />
+			<!--<p><label for="categorie">Categorie</label><br />
 			
-			<p><?php wp_dropdown_categories('show_option_none=Select categorie&tab_index=4&taxonomy=Categories' ); ?></p>
+			<p><?php wp_dropdown_categories('show_option_none=Select categorie&tab_index=4&taxonomy=Categories' ); ?></p> -->
 	 
 			<p><label for="description">Description du projet</label><br />
 			 
@@ -116,9 +118,9 @@ function formulaire_projet()
 			 
 			<input type="text" id="video" value="" tabindex="1" size="20" name="video" />
 
-			<!--<p><label for="attach">Pieces jointes</label><br />
+			<p><label for="attach">Pieces jointes</label><br /> 
 			 
-			<input type="file" id="attach" value="" tabindex="1" size="20" name="attach" />-->
+			<input type="file" id="attach" value="" tabindex="1" size="20" name="attach" /> 
 			
 			<p><label for="certif">N Certification</label><br />
 			 
@@ -137,8 +139,7 @@ function formulaire_projet()
 
 			</p>
 	
-			
-			 
+	
 
 			<input type="hidden" name="post-type" id="post-type" value="wp_projects" />
 			 
@@ -205,12 +206,12 @@ function ty_save_post_data() {
 			echo 'Donnez un URL de video';
 			exit;
 		}
-		/*if (isset ($_FILES['attach'])) {
+		if (isset ($_FILES['attach'])) {
 			$attach = $_FILES['attach'];
 		} else {
 			echo 'fichier manquant';
-			exit;
-		}*/
+		exit;
+		}
 		
 		if (isset ($_POST['certif'])) {
 			$certif = $_POST['certif'];
@@ -234,33 +235,7 @@ function ty_save_post_data() {
 
 
 		}
-		/*if (isset($_FILES["file"] ))
- 		 {
- 			$file=$_FILES["file"];
-		 /* echo "Upload: " . $_FILES["file"]["name"] . "<br>";
-		  echo "Type: " . $_FILES["file"]["type"] . "<br>";
-		  echo "Size: " . ($_FILES["file"]["size"] / 1024) . " kB<br>";
-		  echo "Stored in: " . $_FILES["file"]["tmp_name"];
-
-
-		}
-		else
-		{
-			echo "file missingggg";
-		}
-		
-
-		}
-		/*if (isset($_FILES["file"] ))
- 		 {
- 			$file=$_FILES["file"];
-		 /* echo "Upload: " . $_FILES["file"]["name"] . "<br>";
-		  echo "Type: " . $_FILES["file"]["type"] . "<br>";
-		  echo "Size: " . ($_FILES["file"]["size"] / 1024) . " kB<br>";
-		  echo "Stored in: " . $_FILES["file"]["tmp_name"];*/
-
-
-		
+	
 		
 		
 
@@ -279,38 +254,30 @@ function ty_save_post_data() {
 		$the_post_id=wp_insert_post($post);  // http://codex.wordpress.org/Function_Reference/wp_insert_post
 
 		if ($_FILES) {
-	    foreach ($_FILES as $file => $array) {
-	    $newupload = insert_attachment($file,$the_post_id);
+		foreach ($_FILES as $file => $array) {
+			
+	   $newupload = insert_attachment($file,$the_post_id);
+	  }
 }
-}
-	/*if( 'POST' == $_SERVER['REQUEST_METHOD'] && !empty( $_FILES )) {
-		require_once(ABSPATH . 'wp-admin/includes/admin.php');
-		$id = media_handle_upload('attach', $the_post_id);
-		unset($_FILES);
-		update_field('attach', $_POST['attach'], $the_post_id);
-	}*/
+
+	
             
 		
-		//add_post_meta($the_post_id,'categorie',$categorie);
-		//add_post_meta($the_post_id,'etat',$etat);
-		//add_post_meta($the_post_id,'photo',$photo);
-		/*add_post_meta($the_post_id,'video',$video);
-		add_post_meta($the_post_id,'attach',$attach);
+		add_post_meta($the_post_id,'categorie',$categorie);
+		add_post_meta($the_post_id,'etat',$etat);
+		add_post_meta($the_post_id,'video',$video);
 		add_post_meta($the_post_id,'certif',$certif);
 		add_post_meta($the_post_id,'nbr',$nbr);
-		add_post_meta($the_post_id,'noms',$noms);*/
+		add_post_meta($the_post_id,'noms',$noms);
 
-		add_post_meta($the_post_id,'etat',$etat);
-		add_post_meta($the_post_id,'Fichier joint',$file);
-
-		add_post_meta($the_post_id,'etat',$etat);
-		add_post_meta($the_post_id,'Fichier joint',$file);
+	
 
 		
 		//$location = home_url(); // redirect location, should be login page 
 
        // echo "<meta http-equiv='refresh' content='0;url=$location' />"; exit;
-	} // end IF
+	}
+	 // end IF
 	 
 
 
@@ -324,9 +291,12 @@ function insert_attachment($file_handler,$post_id,$setthumb='false') {
 	    require_once(ABSPATH . "wp-admin" . '/includes/media.php');
 	 
 	    $attach_id = media_handle_upload( $file_handler, $post_id );
-	 	if ($setthumb) update_post_meta($post_id,'_thumbnail_id',$attach_id);
+	    echo $file_handler;
+	 	if ($setthumb && $file_handler=="thumbnail") update_post_meta($post_id,'_thumbnail_id',$attach_id);
 	    return $attach_id;
 	}
+
+
 
 
 ?>
