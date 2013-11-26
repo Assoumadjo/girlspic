@@ -13,6 +13,8 @@ get_header(); ?>
 			<?php while ( have_posts() ) : the_post(); ?>
 			<h1><?php the_title() ;?></h1>
 			<?php endwhile; ?>
+		<?php get_sidebar(); ?>
+			
 		</div>
 		<!-- / container -->
 	</div>
@@ -27,8 +29,10 @@ get_header(); ?>
 						comments_template( '', true );
 				?>
 			<?php endwhile; ?>
+
 		</div>
 		<!-- / container -->
+
 	</div>
 	<!-- / content -->
 

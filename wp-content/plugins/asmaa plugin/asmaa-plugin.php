@@ -117,6 +117,7 @@ function formulaire_projet()
 			<p><label for="video">URL Video</label><br />
 			 
 			<input type="text" id="video" value="" tabindex="1" size="20" name="video" />
+			</p>
 
 			<p><label for="attach">Pieces jointes</label><br /> 
 			 
@@ -129,6 +130,7 @@ function formulaire_projet()
 			<p><label for="nbr">Nombre de membres</label><br />
 			 
 			<input type="text" id="nbr" value="" tabindex="1" size="20" name="nbr" />
+			</p>
 			
 			<p><label for="noms">Noms des membres</label><br />
 			 
