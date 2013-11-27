@@ -39,7 +39,7 @@ get_header(); ?>
         $etat=  get_field('etat');
         $categorie=get_field('categorie');
         the_post_thumbnail('thumbnail');
-        $video= get_the_field('video');
+        //$video=  ('video');
         //$num_cert=get_the_field('certif');
         //$nbr=get_the_field('nbr');
         //$noms=get_the_field('noms');
@@ -78,7 +78,7 @@ get_header(); ?>
 
 			<p><label for="video">URL Video</label><br />
 			 
-			<input type="text" id="video" value="<?php echo $video; ?>" tabindex="1" size="20" name="video" />
+			<input type="text" id="video" value="" tabindex="1" size="20" name="video" />
 			</p>
 			<p><label for="certif">N Certification</label><br />
 			 

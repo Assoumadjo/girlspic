@@ -9,7 +9,7 @@ $author = get_user_by( 'id', $post->post_author );
 ?>
 
 <div class="widget widget-bio">
-	<h3><?php _e( 'About the Author', 'fundify' ); ?></h3>
+	<h3>Heeeeello<?php _e( 'About the Author', 'fundify' ); ?></h3>
 
 	<?php echo get_avatar( $author->user_email, 40 ); ?>
 

@@ -5,12 +5,12 @@
  */
 ?>
 
-<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+<article id="post-<?php $_GET['post_id'] ?>" <?php post_class(); ?>>
 	<?php if ( ! is_page() ) : ?>
-		<?php if ( has_post_thumbnail() ) : ?>
+		<?php if ( has_post_thumbnail($_GET['post_id']) ) : ?>
 		<div class="image">
-			<?php the_post_thumbnail( 'blog' ); ?>
-		</div>
+			<?php get_the_post_thumbnail( $_GET['post_id'],'blog' ); ?>
+		</div> 
 		<?php endif; ?>
 
 		<div class="post-meta">

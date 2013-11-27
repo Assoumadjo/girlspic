@@ -9,7 +9,9 @@
 global $campaign, $wp_embed;
 ?>
 
+
 <article class="project-details">
+	
 	<div class="image">
 		<?php if ( $campaign->video() ) : ?>
 			<div class="video-container">

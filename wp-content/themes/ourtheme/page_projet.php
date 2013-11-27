@@ -12,7 +12,7 @@ get_header(); ?>
 			<div id="content" role="main">
 			<?php
 			$query = new WP_Query( array(
-			    'post_type' => 'wp_projects',
+			    'post_type' => 'wp_annonce',
 			    'posts_per_page' => '-1',
 			    'post_status' => array(
 			        'publish'
@@ -41,7 +41,7 @@ get_header(); ?>
 				    
 				    <td><?php echo get_post_status( get_the_ID() ) ?></td>
 				    <?php
-						$edit_post = add_query_arg( 'post', get_the_ID(), get_permalink( 685 + $_POST['_wp_http_referer'] ) );
+						$edit_post = add_query_arg( 'post', get_the_ID(), get_permalink( 613 + $_POST['_wp_http_referer'] ) );
 					?>
 				    <td><a href="<?php echo $edit_post; ?>">Edit</a>
 				   <?php if( !(get_post_status() == 'trash') ) : ?>

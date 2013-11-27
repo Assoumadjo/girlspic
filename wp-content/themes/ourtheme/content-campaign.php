@@ -9,6 +9,7 @@ global $post;
 $campaign = atcf_get_campaign( $post );
 ?>
 
+hahahahaha
 <article id="post-<?php the_ID(); ?>" <?php post_class( 'item' ); ?>>
 	<?php if ( ! $campaign->is_active() && $campaign->is_funded() ) : ?>
 	<div class="campaign-ribbon success">
