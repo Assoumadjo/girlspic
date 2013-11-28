@@ -1,12 +1,11 @@
 <?php
 /**
- * Plugin Name: Asmaa Test
+ * Plugin Name: Project plugin
  * Plugin URI: http://URI_Of_Page_Describing_Plugin_and_Updates
  * Description: Just an example to test Costum post type
  * Version: The Plugin's Version Number, e.g.: 1.0
- * Author: Asmaa
- * Author URI: http://URI_Of_The_Plugin_Author
- * License: blbalab
+ 
+ * 
  */
 
 // rester ds le meme directory
@@ -64,6 +63,9 @@ function create_post_type() {
 register_taxonomy( 'project_category', // register custom taxonomy - quote category
 			'wp_projects',
 			array( 'hierarchical' => true,
+				'show_ui' => true,
+            'show_tagcloud' => false,
+            'hierarchical' => true,
 				'label' => __( 'Categories des projets' )
 			)
 		);
@@ -75,71 +77,146 @@ register_taxonomy( 'project_category', // register custom taxonomy - quote categ
 		);
 
 		//shortcode
-		add_shortcode('asmaatest', 'formulaire_projet');
+		add_shortcode('projectform', 'formulaire_projet');
 		
 }
 
 function formulaire_projet()
 {
-	echo "Formulaire Projet";
+	
 	?>
+	<html>
+	<head>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+  
+		 <script src="//tinymce.cachefly.net/4.0/tinymce.min.js"></script>
+		<script>
+$(document).ready(function() {
+	  
+	   tinymce.init({selector:'textarea',
+        	  menubar:false,
+  			  statusbar: false,
+    	 mode : "specific_textareas",
+        /*plugins : "autolink, lists, spellchecker, style, layer, table, advhr, advimage, advlink, emotions, iespell, inlinepopups, insertdatetime, preview, media, searchreplace, print, contextmenu, paste, directionality, fullscreen, noneditable, visualchars, nonbreaking, xhtmlxtras, template",*/
+        editor_selector :"tinymce-enabled"
+    }
+        	);
+  });
+		</script>
+		<script type="text/javascript">
+
+		function ajouter(x)
+		{
+			$('#membre').html('');
+			for(var i=0;i<x;i++)
+			{
+				$('#membre').append('<p class="atcf-submit-campaign-membre"><input type="text" value="" name="nom'+i+'" /></p><br>');
+			}
+		}
+		</script>
+
+	</head>
+	<body>
 	<div class="entry-content">
-	<form id="projet" name="projetForm" method="post" action="" enctype="multipart/form-data">
+	<form id="projet" name="projetForm" method="post" class="atcf-submit-campaign" action="" enctype="multipart/form-data">
 		 <h3 class="atcf-submit-section campaign_heading">Postez votre Projet maintenant </h3>
+			
 			<p class="atcf-submit-campaign-title">
-			<p><label for="title">Titre Projet</label><br />
+			<label for="title">Titre du Projet</label><br />
+			<input type="text" id="title"  value="" placeholder="" name="title" />
+			 </p>
+
+			
+		<div class="atcf-submit-campaign-description">
+		<label for="description">Description du projet</label>
+		<div id="wp-description-wrap" class="wp-core-ui wp-editor-wrap html-active">
+		<div id="wp-description-editor-container" class="wp-editor-container">
+		<textarea rows="8" cols="40" name="description" id="editor" class="tinymce-enabled required"></textarea>
+		</div>
+	</div>
+</div>
+			
+			<div class="atcf-submit-campaign-category">
+		<label for="category">Categories</label>
+
+		<ul class="atcf-multi-select">			
+			<?php
+				$genres = get_terms('project_category', 'orderby=id&hide_empty=0');
+				$counter = 0;
+				foreach ($genres as $genre) {
+				$counter++;
+			
+				$option='<li id="download_category-'.$counter.'" class="popular-category">
+				<label class="selectit" >
+				<input value="'.$genre->term_taxonomy_id.'" type="checkbox" name="category[]" id="'.$genre->name.'">'.$genre->name.'</label></li>';
+				echo $option;
+				}
+			?>
+
+	</ul>
+	</div>
+			
+			
+			<p class="atcf-submit-campaign-excerpt">
+			<label for="etat">Etat</label><br />
 			 
-			<input type="text" id="title" value="" tabindex="1" size="20" name="title" />
+			<select id="etat" value="" name="etat" >
+				<option>Pas encore financé</option>
+				<option>En cours de financement</option>
+				<option>Financé</option>
+			</select>
+			</p>
+			
 			 
+			 <p class="atcf-submit-campaign-image">
+			 <label for="thumbnail">Photo</label> 
+			<input type="file" id="thumbnail"  name="thumbnail" />
 			</p>
 
-			<!--<p><label for="categorie">Categorie</label><br />
+			<p class="atcf-submit-campaign-video">
+			<label for="video">URL Video</label><br />
+			<input type="text" id="video"   name="video" placeholder="" />
+			</p>
+
 			
-			<p><?php wp_dropdown_categories('show_option_none=Select categorie&tab_index=4&taxonomy=Categories' ); ?></p> -->
+			
+
+			 <p class="atcf-submit-campaign-image">
+			<label for="attach">Pieces jointes</label><br /> 
+			 <input type="file" id="attach" value="" placeholder="" name="attach" /> 
+			</p>
+
+
+			<p class="atcf-submit-campaign-video">
+			<label for="certif">N Certification</label><br />
+			 <input type="text" id="certif" value="" placeholder="" name="certif" />
+			</p>
+
+			<p class="atcf-submit-campaign-length">
+			<label for="nbr">Nombre de membres</label>
+			<input type="number" min="0" max="5" step="1" name="nbr" id="nbr" value="0" placeholder="" onchange="ajouter(this.value)">
+
+			</p>
+
+			
+
+		
+			<label for="noms">Noms des membres</label>
+			 <div id="membre">
+
+			
+			 </div>
+			</p> 	
+
+
+			<p class="atcf-submit-campaign-submit">
+			<button type="submit" name="poster" value="Poster" class="button">
+				Poster le projet		</button>
+
+				<input type="hidden" name="post-type" id="post-type" value="wp_projects" />
+				<input type="hidden" name="action" value="wp_projects" />
 	 
-			<p><label for="description">Description du projet</label><br />
-			 
-			<textarea id="description" tabindex="3" name="description" cols="50" rows="6"></textarea>
-			 
-			</p>
-
-			<p><label for="meta">Etat</label><br />
-			 
-			<input type="text" id="etat" value="" tabindex="1" size="20" name="etat" />
-			<br>
-			
-			 
-
-			 <p><label for="thumbnail">Photo</label><br />
-			 
-			<input type="file" id="thumbnail" value="" tabindex="1" size="20" name="thumbnail" />
-			
-			<p><label for="video">URL Video</label><br />
-			 
-			<input type="text" id="video" value="" tabindex="1" size="20" name="video" />
-			</p>
-
-			<p><label for="attach">Pieces jointes</label><br /> 
-			 
-			<input type="file" id="attach" value="" tabindex="1" size="20" name="attach" /> 
-			
-			<p><label for="certif">N Certification</label><br />
-			 
-			<input type="text" id="certif" value="" tabindex="1" size="20" name="certif" />
-			
-			<p><label for="nbr">Nombre de membres</label><br />
-			 
-			<input type="text" id="nbr" value="" tabindex="1" size="20" name="nbr" />
-			</p>
-			
-			<p><label for="noms">Noms des membres</label><br />
-			 
-			<input type="text" id="noms" value="" tabindex="1" size="20" name="noms" /> 
-			 
-			</p> 			 
-			<p align="right"><input type="submit" value="Envoyer" tabindex="6" id="submit" name="submit" /></p>
-
-			</p>
+					</p>
 	
 	
 
@@ -150,6 +227,9 @@ function formulaire_projet()
 			<?php wp_nonce_field( 'name_of_my_action','name_of_nonce_field' ); ?>
 	 
 	</form>
+</div>
+</body>
+</html>
 	<?php
 
 		if($_POST){
@@ -165,6 +245,11 @@ function ty_save_post_data() {
 	   exit;
 
 	}else{ 
+		$nom0="";
+		$nom1="";
+		$nom2="";
+		$nom3="";
+		$nom4="";
  
 		// Do some minor form validation to make sure there is content
 		if (isset ($_POST['title'])) {
@@ -174,15 +259,17 @@ function ty_save_post_data() {
 			echo 'Entrez un titre';
 			exit;
 		}
-		/*if (isset ($_POST['categorie'])) {
-			$title =  $_POST['categorie'];
-		} else {
-			echo 'Choisissez une catégorie';
-
-			
-
-			exit;
-		}*/
+		if (isset($_POST['category']) && is_array($_POST['category'])) {
+		foreach($_POST['category'] as $category) 
+			{
+		
+		$tableau=array($_POST['category']);}
+	}
+	else
+	{
+		echo "check a category";
+		exit;
+	}
 		if (isset ($_POST['description'])) {
 			$description = $_POST['description'];
 		} else {
@@ -227,21 +314,27 @@ function ty_save_post_data() {
 			echo 'Donnez le nombre de participants';
 			exit;
 		}
-		if (isset ($_POST['noms'])) {
-			$noms = $_POST['noms'];
-		} else {
-			echo 'Donnez les noms de participants';
-			exit;
-		}
-		
+		if (isset ($_POST['nom0'])) {
+			$nom0 = $_POST['nom0'];
+		} 
+		if (isset ($_POST['nom1'])) {
+			$nom1 = $_POST['nom1'];
+		} 
+		if (isset ($_POST['nom2'])) {
+			$nom2 = $_POST['nom2'];
+		} 
+		if (isset ($_POST['nom3'])) {
+			$nom3 = $_POST['nom3'];
+		} 
+		if (isset ($_POST['nom4'])) {
+			$nom4 = $_POST['nom4'];
+		}	
 
 
 		}
 	
 		
-		
-
-	 
+		 
 		// Add the content of the form to $post as an array
 		$post = array(
 			'post_title' => wp_strip_all_tags( $title ),
@@ -261,17 +354,18 @@ function ty_save_post_data() {
 	   $newupload = insert_attachment($file,$the_post_id);
 	  }
 }
-
-	
             
 		
-		add_post_meta($the_post_id,'categorie',$categorie);
+		wp_set_post_terms( $the_post_id, $_POST['category'],'project_category' );
 		add_post_meta($the_post_id,'etat',$etat);
 		add_post_meta($the_post_id,'video',$video);
 		add_post_meta($the_post_id,'certif',$certif);
 		add_post_meta($the_post_id,'nbr',$nbr);
-		add_post_meta($the_post_id,'noms',$noms);
-
+		add_post_meta($the_post_id,'nom1',$nom0);
+		add_post_meta($the_post_id,'nom2',$nom1);
+		add_post_meta($the_post_id,'nom3',$nom2);
+		add_post_meta($the_post_id,'nom4',$nom3);
+		add_post_meta($the_post_id,'nom5',$nom4);
 	
 
 		
@@ -293,7 +387,6 @@ function insert_attachment($file_handler,$post_id,$setthumb='false') {
 	    require_once(ABSPATH . "wp-admin" . '/includes/media.php');
 	 
 	    $attach_id = media_handle_upload( $file_handler, $post_id );
-	    echo $file_handler;
 	 	if ($setthumb && $file_handler=="thumbnail") update_post_meta($post_id,'_thumbnail_id',$attach_id);
 	    return $attach_id;
 	}

@@ -1872,7 +1872,10 @@ img.aligncenter {
 	width: 48%;
 	margin-right: 2%;
 }
-
+.entry-content .atcf-submit-campaign-membre {
+width: 48%;
+margin-top: 0%;
+}
 .entry-content .atcf-submit-campaign-length,
 .entry-content .atcf-submit-campaign-video {
 	margin-right: 0;

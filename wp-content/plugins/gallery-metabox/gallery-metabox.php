@@ -120,7 +120,10 @@ $mime_types = array(
         'tif|tiff' => 'image/tiff',
         'pdf' =>'application/pdf',
         'doc' => 'application/msword',
+        'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
         'xls' => 'application/vnd.ms-excel',
+        'pptx'=>  'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+        'ppt' => 'application/vnd.ms-powerpoint',
     );
 		$args = array(
 			'post_type'         => 'attachment',
